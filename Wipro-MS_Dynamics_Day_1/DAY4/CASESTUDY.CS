@@ -4,8 +4,8 @@ class PlatformSettings
 {
     //static variables 
     private static string platformName = "Online Learning Platform";
-    private static int totalRegisteredUsers = 0;
-    private static int maxLoginAttempts = 5;
+    private static int totalRegisteredUsers = Convert.ToInt32(Console.ReadLine());
+    private static int maxLoginAttempts = Convert.ToInt32(Console.ReadLine());
     private static double globalDiscountRate = 10.0;
 
     //static methods to access those static variables
@@ -52,7 +52,7 @@ class Program
     {
         // Registering users
         PlatformSettings.RegisterUserdetails();
-        PlatformSettings.RegisterUserdetails();
+        //PlatformSettings.RegisterUserdetails();
 
         // Accessing static properties
         Console.WriteLine("Platform Name: " + PlatformSettings.PlatformName);
@@ -60,12 +60,6 @@ class Program
         Console.WriteLine("Max Login Attempts: " + PlatformSettings.MaxLoginAttempts);
         Console.WriteLine("Global Discount Rate: " + PlatformSettings.GlobalDiscountRate + "%");
 
-        // Updating global settings
-        PlatformSettings.MaxLoginAttempts = 3;
-        PlatformSettings.GlobalDiscountRate = 15.0;
-
-        Console.WriteLine("\nAfter Updating Settings:");
-        Console.WriteLine("Max Login Attempts: " + PlatformSettings.MaxLoginAttempts);
-        Console.WriteLine("Global Discount Rate: " + PlatformSettings.GlobalDiscountRate + "%");
+        
     }
 }

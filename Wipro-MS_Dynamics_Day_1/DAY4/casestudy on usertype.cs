@@ -1,66 +1,101 @@
 using System;
 
-namespace OrderManagementSystem
+namespace UserTypeCaseStudy
 {
-    //  Enum – Predefined order statuses
+    // Step 1: Enum to represent OrderStatus
     enum OrderStatus
     {
         Pending,
-        Confirmed,
+        Processing,
         Shipped,
         Delivered,
         Cancelled
     }
 
-    //  Struct – Lightweight delivery location data
-    struct DeliveryLocation
+    // Step 2: Structure to represent Location
+    struct Location
     {
         public double Latitude;
         public double Longitude;
 
-        public DeliveryLocation(double latitude, double longitude)
+        public Location(double latitude, double longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
     }
 
-    //  Interface – Payment contract
+    // Step 3: Interface for payment contract
     interface IPayment
     {
-        void ProcessPayment();
+        void ProcessPayment(double amount);
+        void RefundPayment(double amount);
+        bool MakePayment(double amount);
     }
 
-    // Credit card payment implementation
+    // Credit Card Payment Implementation
     class CreditCardPayment : IPayment
     {
-        public void ProcessPayment()
+        public void ProcessPayment(double amount)
         {
-            Console.WriteLine("Credit card payment processed.");
+            Console.WriteLine($"Credit Card payment processed for ₹{amount}");
+        }
+
+        public void RefundPayment(double amount)
+        {
+            Console.WriteLine($"Credit Card refund issued for ₹{amount}");
+        }
+
+        public bool MakePayment(double amount)
+        {
+            Console.WriteLine("Credit Card payment successful");
+            return true;
         }
     }
 
-    // UPI payment implementation
-    class UpiPayment : IPayment
+    // Debit Card Payment Implementation
+    class DebitCardPayment : IPayment
     {
-        public void ProcessPayment()
+        public void ProcessPayment(double amount)
         {
-            Console.WriteLine("UPI payment processed.");
+            Console.WriteLine($"Debit Card payment processed for ₹{amount}");
+        }
+
+        public void RefundPayment(double amount)
+        {
+            Console.WriteLine($"Debit Card refund issued for ₹{amount}");
+        }
+
+        public bool MakePayment(double amount)
+        {
+            Console.WriteLine("Debit Card payment successful");
+            return true;
         }
     }
-    class Order
+
+    // Step 4: Class Order implementing payment interface
+    class Order : IPayment
     {
         public int OrderId { get; set; }
         public OrderStatus Status { get; set; }
-        public IPayment PaymentMethod { get; set; }
-        public DeliveryLocation Location { get; set; }
+        public Location ShippingLocation { get; set; }
 
-        public void PlaceOrder()
+        public void ProcessPayment(double amount)
         {
-            Console.WriteLine($"Placing Order ID: {OrderId}");
-            PaymentMethod.ProcessPayment();
-            Status = OrderStatus.Confirmed;
-            Console.WriteLine($"Order Status: {Status}");
+            Console.WriteLine($"Order {OrderId}: Payment processed for ₹{amount}");
+            Status = OrderStatus.Processing;
+        }
+
+        public void RefundPayment(double amount)
+        {
+            Console.WriteLine($"Order {OrderId}: Refund processed for ₹{amount}");
+            Status = OrderStatus.Cancelled;
+        }
+
+        public bool MakePayment(double amount)
+        {
+            Console.WriteLine($"Order {OrderId}: Payment successful");
+            return true;
         }
     }
 
@@ -69,27 +104,20 @@ namespace OrderManagementSystem
     {
         static void Main(string[] args)
         {
-            // Create payment method
-            IPayment payment = new CreditCardPayment();
+            Location location = new Location(12.9716, 77.5946);
 
-            // Create delivery location
-            DeliveryLocation location = new DeliveryLocation(12.9716, 77.5946);
-
-            // Create order
             Order order = new Order
             {
                 OrderId = 1001,
                 Status = OrderStatus.Pending,
-                PaymentMethod = payment,
-                Location = location
+                ShippingLocation = location
             };
 
-            // Place order
-            order.PlaceOrder();
+            order.ProcessPayment(2500);
+            order.MakePayment(2500);
 
-            Console.WriteLine(
-                "Delivery Location: {order.Location.Latitude}, {order.Location.Longitude}"
-            );
+            Console.WriteLine($"Order Status: {order.Status}");
+            Console.WriteLine($"Shipping Location: {order.ShippingLocation.Latitude}, {order.ShippingLocation.Longitude}");
         }
     }
 }

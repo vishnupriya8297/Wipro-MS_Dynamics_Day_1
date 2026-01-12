@@ -59,3 +59,17 @@ for(int i=0;i<a.Length;i++)
 //find index of an element
 int index=Array.IndexOf(a,5);
 Console.WriteLine("Index of 5:"+index);
+//types of arrays in C#
+	//1. Single-Dimensional Arrays: A linear array with a single row of elements.
+	//2. Multi-Dimensional Arrays: Arrays with more than one dimension, such as 2D or 3D arrays.
+	//3. Jagged Arrays: An array of arrays, where each "row" can have a different length.	
+//example of multi-dimensional array
+int[,] matrix = new int[2, 3] { { 1, 2, 3 }, { 4, 5, 6 } };
+for (int i = 0; i < 2; i++)
+{
+	for (int j = 0; j < 3; j++)
+	{
+		Console.Write(matrix[i, j] + " ");
+	}
+	Console.WriteLine();
+}
